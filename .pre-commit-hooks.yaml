@@ -1,0 +1,69 @@
+---
+- id: minimum-changes
+  name: Minimum Changes
+  description: This hook checks for a minimum number of line changes against git diff
+  entry: minimum-changes
+  language: python
+  pass_filenames: True
+  require_serial: True
+  types: [text]
+- id: validate-bes
+  name: Validate BigFix BES Files
+  description: This hook validates BigFix BES XML Files
+  entry: validate-bes
+  language: python
+  pass_filenames: True
+  types: [text]
+  files: \.(bes|ojo)$
+- id: verify-files-contain-entry
+  name: Verify Files Contain Entry
+  description: This hook validates that a file has a regex match or group within a reference file
+  entry: verify-files-contain-entry
+  language: python
+  pass_filenames: True
+  types: [text]
+- id: verify-files-contain-pattern
+  name: Verify Files Contain Pattern
+  description: This hook validates that a file has a regex match or group within a reference file
+  entry: verify-files-contain-pattern
+  language: python
+  pass_filenames: True
+  types: [text]
+- id: verify-files-are-ascii
+  name: Verify Files Are ASCII
+  description: This hook validates that a file has only ASCII contents
+  entry: verify-files-are-ascii
+  language: python
+  pass_filenames: True
+  types: [text]
+- id: git-clean
+  name: Run Git Clean
+  description: This will delete untracked files by running `git clean -f`
+  entry: git-clean
+  language: python
+  pass_filenames: False
+- id: regex-search-filter-replace
+  name: RegEx Search Filter Replace
+  description: This hook replaces file contents based upon RegEx and RegEx filter
+  entry: regex-search-filter-replace
+  language: python
+  pass_filenames: True
+  types: [text]
+  files: \.(xml|html|htm|bes|ojo)$
+- id: revert-missing-change
+  name: Revert Missing Change
+  description: This hook requires a regex match in the git history of a file.
+  entry: revert-missing-change
+  language: python
+  pass_filenames: True
+  require_serial: True
+  types: [text]
+  stages: [manual]
+- id: verify-fixlet-id
+  name: Validate Fixlet ID in BigFix BES Files
+  description: This hook validates Fixlet ID in BigFix BES Files
+  entry: verify-fixlet-id
+  language: python
+  pass_filenames: True
+  types: [text]
+  files: \.(bes|ojo)$

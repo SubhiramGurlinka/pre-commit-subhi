@@ -1,0 +1,115 @@
+---
+# run on only items staged in git:  pre-commit
+# automatically run on commit:      pre-commit install
+# check all files in repo:          pre-commit run --all-files
+# update all pre-commit hooks:      pre-commit autoupdate
+# https://github.com/pre-commit/pre-commit-hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: check-yaml
+      # - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      # - id: check-xml
+      - id: end-of-file-fixer
+      # https://www.aleksandrhovhannisyan.com/blog/crlf-vs-lf-normalizing-line-endings-in-git/
+      # - id: mixed-line-ending
+      #   args: ['--fix=no']
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      #  args: [--markdown-linebreak-ext=md]
+      - id: detect-private-key
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.27.1
+    hooks:
+      - id: yamllint
+        args: [-c=.yamllint.yaml]
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1
+    hooks:
+      - id: isort
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+  - repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+      - id: black
+  - repo: https://github.com/jgstew/pre-commit-jgstew
+    rev: v1.1.4
+    hooks:
+      - id: minimum-changes
+        args: [--min-changes=0]
+  # Local Hooks:
+  # https://towardsdatascience.com/getting-started-with-python-pre-commit-hooks-28be2b2d09d5
+  # the following might not work everywhere due to using `python` instead of `python3`
+  - repo: local
+    hooks:
+      - id: validate-bes-local
+        name: validate-bes-local
+        entry: python pre_commit_hooks/validate_bes.py
+        language: system
+        pass_filenames: True
+        files: \.(bes|ojo)$
+  - repo: local
+    hooks:
+      - id: verify-files-contain-entry-local
+        name: verify-files-contain-entry-local
+        entry: python pre_commit_hooks/verify_files_contain_entry.py
+        language: system
+        pass_filenames: True
+        files: \.bes$
+        args:
+          [
+            "--ref-file=test/example.test_file",
+            "--re-pattern=(?i)<Title>(.+)</Title>",
+          ]
+  - repo: local
+    hooks:
+      - id: verify-files-contain-pattern-local
+        name: verify-files-contain-pattern-local
+        entry: python pre_commit_hooks/verify_files_contain_pattern.py
+        language: system
+        pass_filenames: True
+        files: \.test_file$
+        args: ["--re-pattern=(?i)Example"]
+  - repo: local
+    hooks:
+      - id: minimum-changes-local
+        name: minimum-changes-local
+        entry: python pre_commit_hooks/minimum_changes.py
+        language: system
+        pass_filenames: True
+        args: [--min-changes=2, --auto-revert]
+        files: .test_file
+  - repo: local
+    hooks:
+      - id: git-clean
+        name: git-clean-local
+        entry: python pre_commit_hooks/git_clean.py
+        language: system
+        files: .test_file
+  - repo: local
+    hooks:
+      - id: revert-missing-change
+        name: revert-missing-change-local
+        entry: python pre_commit_hooks/revert_missing_change.py
+        language: system
+        pass_filenames: True
+        args: ['--change_regex=v[0-9]+(\.[0-9]+)*\s*</Title>']
+        files: .test_file
+  - repo: local
+    hooks:
+      - id: try-repo
+        name: try-repo
+        entry: pre-commit try-repo . --files test/example.test_file test/example-test.bes
+        language: system
+        pass_filenames: False
+        require_serial: True
+        stages: [manual]

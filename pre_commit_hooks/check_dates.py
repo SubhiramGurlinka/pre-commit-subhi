@@ -9,7 +9,7 @@ def check_file(filename):
     failed = False
 
     try:
-        with open(filename, 'r', encoding='utf-8') as f:
+        with open(filename, 'r') as f:
             content = f.read()
             matches = re.finditer(pattern, content)
 

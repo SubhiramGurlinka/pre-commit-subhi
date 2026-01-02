@@ -22,10 +22,10 @@ def check_file(filename):
                     actual_day = date_obj.strftime("%a")
 
                     if provided_day != actual_day:
-                        print(f"❌ {filename}: Found '{provided_day}', but {date_str} is a {actual_day}")
+                        print(f"{filename}: Found '{provided_day}', but {date_str} is a {actual_day}")
                         failed = True
                 except ValueError:
-                    print(f"⚠️ {filename}: Could not parse date format in '{match.group(0)}'")
+                    print(f"{filename}: Could not parse date format in '{match.group(0)}'")
                     failed = True
 
     except Exception as e:

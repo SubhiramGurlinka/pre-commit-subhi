@@ -67,3 +67,9 @@
   pass_filenames: True
   types: [text]
   files: \.(bes|ojo)$
+- id: validate-xml-dates
+  name: Validate XML Date Alignment
+  description: Checks if the day of the week matches the date in <Value> tags.
+  entry: python hooks/check_dates.py
+  language: python
+  files: \.xml$

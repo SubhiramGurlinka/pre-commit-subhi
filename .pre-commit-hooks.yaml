@@ -70,7 +70,7 @@
 - id: validate-xml-dates
   name: Validate XML Date Alignment
   description: Checks if the day of the week matches the date in <Value> tags.
-  entry: pre_commit_hooks/check_dates.py
+  entry: validate-xml-dates
   language: python
   pass_filenames: True
   types: [text]
